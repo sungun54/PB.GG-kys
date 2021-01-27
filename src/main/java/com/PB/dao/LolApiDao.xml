@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.PB.dao.LolApiDao">
+	<select id="getLolApiSummoner" resultType="LolApiSummoner">
+		SELECT *
+		FROM
+		lolApiSummoner
+		WHERE `name` = #{name}
+	</select>
+
+	<insert id="saveLolApiSummoner">
+		INSERT INTO lolApiSummoner
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		accountId = #{accountId},
+		profileIconId = #{profileIconId},
+		revisionDate = #{revisionDate},
+		`name` = #{name},
+		id = #{id},
+		puuid = #{puuid},
+		summonerLevel = #{summonerLevel}
+	</insert>
+
+	<insert id="updateLolApiSummoner">
+		UPDATE lolApiSummoner
+		SET updateDate = NOW(),
+		accountId = #{accountId},
+		profileIconId = #{profileIconId},
+		revisionDate = #{revisionDate},
+		`name` = #{name},
+		id = #{id},
+		puuid = #{puuid},
+		summonerLevel = #{summonerLevel}
+		WHERE id = #{id}
+	</insert>
+	
+	<select id="getLolApiChampion" resultType="LolApiChampion">
+		SELECT *
+		FROM
+		`lolApiChampion`
+		WHERE
+		`key` = #{key}
+	</select>
+	
+	<select id="getLolApiSpell" resultType="LolApiSpell">
+		SELECT * 
+		FROM `lolApiSpell`
+		WHERE 
+		`key` = #{spellId}
+	</select>
+	
+	<select id="getLolApiMainRune" resultType="Rune">
+		SELECT *
+		FROM `lolApiRune`
+		WHERE 
+		`slotsRunesId` = #{main}
+	</select>
+
+	<select id="getLolApiSubRune" resultType="Rune">
+		SELECT *
+		FROM `lolApiRune`
+		WHERE
+		`runeId` = #{sub}
+	</select>
+	
+	<select id="getLolApiItem" resultType="LolApiItem">
+		SELECT *
+		FROM `lolApiItem`
+		WHERE
+		`key` = #{key}
+	</select>
+</mapper> 

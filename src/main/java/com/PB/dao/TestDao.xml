@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PB.dao.TestDao">
+	<insert id="push">
+		INSERT INTO `item`
+		SET key = #{array0},
+		name = #{array1},
+		explain = #{array2},
+		buyPrice = #{array3},
+		sellPrice = #{array4},
+		tag = #{array5}
+	</insert>
+	
+	<insert id="championPush">
+		INSERT INTO `lolApiChampion`
+		SET version = #{array0},
+		championId = #{array1},
+		key = #{array2},
+		name = #{array3},
+		title = #{array4},
+		explain = #{array5},
+		partype = #{array6}
+	</insert>
+	
+	<insert id="runePush">
+		INSERT INTO `rune`
+		SET `runeId` = #{array0},
+		`key` = #{array1},
+		`icon` = #{array2},
+		`name` = #{array3},
+		`slotsRunesId` = #{array4},
+		`slotsRunesKey` = #{array5},
+		`slotsRunesIcon` = #{array6},
+		`slotsRunesName` = #{array7},
+		`slotsRunesShortDesc` = #{array8},
+		`slotsRunesLongDesc` = #{array9}
+	</insert>
+
+	<!-- 
+	<insert id="spellPush">
+		INSERT INTO `spell`
+		SET `type` = #{array0},
+		`version` = #{array1},
+		`data` = #{array2},
+		`spellId` = #{array3},
+		`name` = #{array4},
+		`description` = #{array5},
+		`cooldown` = #{array6},
+		`key` = #{array7},
+		`summonerLevel` = #{array8},
+		`mode` = #{array9},
+		`range` = #{array10}
+	</insert>
+	
+	 -->
+	<select id="getChampion" resultType="lolApiChampion">
+		SELECT *
+		FROM
+		`lolApiChampion`
+		WHERE
+		`key` = #{championId}
+	</select>
+	
+	<!-- 
+	<select id="getSpell" resultType="Spell">
+		SELECT * 
+		FROM `spell`
+		WHERE 
+		`key` = #{spell}
+	</select>
+	
+	 -->
+	<select id="getMainRune" resultType="Rune">
+		SELECT *
+		FROM `rune`
+		WHERE 
+		`slotsRunesId` = #{rune1Id}
+	</select>
+
+	<select id="getSubRune" resultType="Rune">
+		SELECT *
+		FROM `rune`
+		WHERE
+		`runeId` = #{rune2Id}
+	</select>
+	
+	
+</mapper> 

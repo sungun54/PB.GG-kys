@@ -1,0 +1,54 @@
+spring:
+  profiles:
+    active: local # 기본적으로 local이 선택된다는 뜻
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp 
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://127.0.0.1:3306/PB?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull
+    username: sbsst
+    password: sbs123414
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: jangka512@gmail.com
+    password: caslfrokflgzpwan
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+mybatis:
+  type-aliases-package: com.PB.dto
+  
+custom:
+  siteName: 국내 프로 템트리 검색
+  siteMainUri: http://localhost:8051/usr/home/main
+  logoText: 국내 프로 템트리 검색
+  emailFrom: no-reply@PB.com
+  emailFromName: 국내 프로 템트리 검색
+  logging:
+    dir: log
+    level: info
+  lolApi:
+    apiKey: RGAPI-894eae05-e92e-4c69-b6db-f12f6622105c
+---
+
+spring:
+  profiles: local
+server:
+  port: 8051  
+
+---
+spring:
+  profiles: production
+  servlet:
+    multipart:
+      location: /tmp
+  datasource:
+    username: PB
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/PB?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull

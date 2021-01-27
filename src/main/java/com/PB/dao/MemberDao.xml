@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.PB.dao.MemberDao">
+
+	<select id="getMemberById" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE
+		loginId = #{loginId}	
+	</select>
+	
+	<select id="getNicknameDupCount" resultType="int">
+		SELECT COUNT(*) AS
+		cnt
+		FROM
+		member
+		WHERE nickname = #{nickname}
+	</select>
+	
+	<select id="getEmailDupCount" resultType="int">
+		SELECT COUNT(*) AS
+		cnt
+		FROM
+		member
+		WHERE email = #{email}
+	</select>
+	
+	<insert id="join" useGeneratedKeys="true" keyProperty="id" >
+		INSERT
+		INTO member
+		SET regDate = NOW(),
+		updateDate = NOW(),
+		authStatus = 0,
+		loginId = #{loginId},
+		loginPw = #{loginPw},
+		`name` = #{name},
+		nickname = #{nickname},
+		email = #{email},
+		cellphoneNo = #{cellphoneNo}
+	</insert>
+	
+	<select id="getLoginIdDupCount" resultType="int">
+		SELECT COUNT(*) AS cnt
+		FROM member
+		WHERE loginId = #{loginId}
+	</select>
+	
+	<select id="getMemberByLoginId" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE id = #{id}
+	</select>
+	
+	<select id="getMemberByNameAndEmail" resultType="Member">
+		SELECT *
+		FROM member
+		WHERE name = #{name}
+		AND email = #{email}
+	</select>
+	
+	<update id="modify">
+		UPDATE member
+		<set>
+			updateDate = NOW(),
+			loginPw = #{loginPw},
+		</set>
+		WHERE id = #{loginedMemberId}
+	</update>
+	
+	<resultMap type="Member" id="member">
+		<id property="id" column="id" />
+		<id property="regDate" column="regDate" />
+		<id property="updateDate" column="updateDate" />
+		<id property="delDate" column="delDate" />
+		<id property="delStatus" column="delStatus" />
+		<id property="authStatus" column="authStatus" />
+		<id property="loginId" column="loginId" />
+		<id property="loginPw" column="loginPw" />
+		<id property="name" column="name" />
+		<id property="nickname" column="nickname" />
+		<id property="email" column="email" />
+		<id property="cellphoneNo" column="cellphoneNo" />
+	</resultMap>
+	
+	<update id="unsubscribe">
+		UPDATE member
+		<set>
+			delDate = NOW(),
+			delStatus = 1,
+		</set>
+		WHERE id = #{loginedMemberId}
+	</update>
+	
+	<select id="isNeedToChangePasswordForOld" resultType="boolean">
+		SELECT 
+		UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(M.updateDate) > 60 * 60 * 24 * 90 AS regDatePastSeconds
+		FROM member AS M
+		WHERE id = #{id}
+	</select>
+	
+	
+</mapper> 

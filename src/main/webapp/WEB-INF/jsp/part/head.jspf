@@ -1,0 +1,203 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${logoText}-${pageTitle}</title>
+
+<!-- 모바일에서 사이트가 PC에서의 픽셀크기 기준으로 작동하게 하기(반응형 하려면 필요) -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- 구글 폰트 불러오기 -->
+<!-- rotobo(400/700/900), notosanskr(400/600/900) -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Roboto:wght@400;700;900&display=swap">
+<!-- 폰트어썸 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- 로대쉬 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.19/lodash.min.js"></script>
+<!-- 팝업 JS -->
+<script type="text/javascript" src="chrome-extension://aggiiclaiamajehmlfpkjmlbadmkledi/popup.js" async></script>
+<script type="text/javascript" src="chrome-extension://aggiiclaiamajehmlfpkjmlbadmkledi/tat_popup.js" async></script>
+
+<!-- 공통 CSS -->
+<link rel="stylesheet" href="/resource/common/common.css" />
+<!-- 공통 JS -->
+<script src="/resource/common/common.js"></script>
+
+<!-- 공통 App CSS -->
+<link rel="stylesheet" href="/resource/app/app.css" />
+<!-- 공통 App JS -->
+<script src="/resource/app/app.js"></script>
+
+<!-- head CSS -->
+<link rel="stylesheet" href="/resource/home/head.css" />
+<!-- head JS -->
+<script src="/resource/home/head.js"></script>
+
+<%="<script>"%>
+var activeProfile = '${activeProfile}';
+<%="</script>"%>
+
+<%="<script>"%>
+var param = ${paramJson};
+<%="</script>"%>
+
+</head>
+<body class cz-shortcut-listen="true">
+  <!-- 
+	<div class="outer-box">
+		<div class="top-bar con">
+			
+		</div>
+		<h1 class="page-title-box con">${pageTitle}</h1>
+	 -->
+  <div class="l-wrap l-wrap--index">
+
+    <script>
+          ;
+          $(document).ready(function() {
+            (function() {
+              //tab test
+              $tab = $('[class^="c-tab__"]'), $tabItem = $tab.find('[class*="item"]');
+              $tabItem.on('click', function() {
+                var _this = $(this);
+                className = _this[0].classList[0], activeClass = className + '--is-active';
+                _this.addClass(activeClass).siblings().removeClass(activeClass);
+              });
+            })();
+
+            (function() {
+              var $opggUtil = $('.opgg-header__util-box'), $btnUtilOpen = $('.opgg-header__util-open'), openClass = 'opgg-header__util-box--is-open';
+
+              $btnUtilOpen.on('click', function() {
+                $opggUtil.toggleClass(openClass);
+              })
+            })();
+
+            (function() {
+              var $search = $('.c-playersearch'), $input = $search.find('.c-playersearch__input-text'), $result = $search.find('.c-playerresult'), expendClass = 'c-playerresult--is-expend';
+              $input.on('focus', function(e) {
+                var _this = $(this), $thisResult = _this.closest('.c-playersearch').find('.c-playerresult');
+                $thisResult.addClass(expendClass);
+              });
+              $search.on('click', function(e) {
+                e.stopPropagation();
+              });
+              $(document).on('click', function(e) {
+                $result.removeClass(expendClass);
+              });
+
+            })();
+          });
+
+          $(function() {
+            var init = function() {
+              $('.opgg-language__list').on('click', function(event) {
+                setLocale(event);
+                var defaultServer = 'KR';
+
+                $(event.target).startLoading({
+                  maxHeight : 15
+                });
+
+                $.OP.GG.layout.regionLanguage.cookie.seti18n(getCurrentLocale());
+
+                window.location.reload();
+              });
+
+              $(".opgg-language__open-short").html(searchLocaleElement(getCurrentLocale()).find('span').html());
+
+              $("html body").on("click", function(e) {
+                var $games = $(e.target).closest(".opgg-header__navi-open");
+                var $language = $(e.target).closest(".opgg-language__open");
+                $(".opgg-header__navi-box")[$games.length ? "toggle" : "hide"]();
+                // $(".opgg-language__box")[$language.length ? "toggle" : "hide"]();
+              });
+            }, getCurrentLocale = function() {
+              return $('.opgg-language__item--is-active').data('locale');
+            }, searchLocaleElement = function(locale) {
+              if (locale === undefined) {
+                locale = getCurrentLocale();
+              }
+
+              return $('.opgg-language__list').find('.opgg-language__item[data-locale=' + locale + ']');
+            }, setLocale = function(event) {
+              var locale = undefined;
+              if (event) {
+                var $item = $(event.target).closest('.opgg-language__item');
+                locale = $item.data('locale');
+                $('.opgg-language__item').removeClass('opgg-language__item--is-active');
+                $item.addClass('opgg-language__item--is-active');
+              }
+              $('.opgg-language__open-short').html(searchLocaleElement(locale).find('span').html());
+            };
+            init();
+          });
+
+          $(function() {
+            var $expandBtn = $('.navi-expand__button');
+            var $naviExpand = $('.navi-expand');
+
+            $expandBtn.on('click', function(e) {
+              if ($naviExpand.hasClass('navi-expand--hide')) {
+                $naviExpand.removeClass('navi-expand--hide');
+                $naviExpand.addClass('navi-expand--show');
+              } else {
+                $naviExpand.removeClass('navi-expand--show');
+                $naviExpand.addClass('navi-expand--hide');
+              }
+            });
+
+            $('html body').on('click', function(e) {
+              var $navi = $(e.target).closest(".navi-expand__wrapper");
+              if (!$navi.length) {
+                $naviExpand.removeClass('navi-expand--show');
+                $naviExpand.addClass('navi-expand--hide');
+              }
+            });
+          })
+        </script>
+
+    <div class="l-menu">
+      <ul class="menu">
+        <li class="menu__item menu__item--active">
+          <a href="/"> HOME</a>
+        </li>
+        <li class="menu__item">
+          <a href="#"> 챔피언 분석 </a>
+        </li>
+        <li class="menu__item">
+          <a href="#"> 랭킹 </a>
+        </li>
+        <li class="menu__item">
+          <a href="#"> 멀티서치 </a>
+        </li>
+        <li class="menu__item">
+          <a href="/usr/article/free-list"> 커뮤니티 </a>
+        </li>
+
+        <li class="login-box">
+          <c:if test="${isLogined}">
+            <span>${loginedMember.nickname}&nbsp님</span>
+          </c:if>
+
+          <c:if test="${isLogined == false}">
+            <span>
+              <a class="btn btn-primary" href="/usr/member/login">로그인</a>
+            </span>
+            <span>
+              <a class="btn btn-primary" href="/usr/member/join">회원가입</a>
+            </span>
+          </c:if>
+
+          <c:if test="${isLogined}">
+            <span>
+              <a class="btn btn-primary" href="/usr/member/doLogout">로그아웃</a>
+            </span>
+          </c:if>
+        </li>
+      </ul>
+
+    </div>
